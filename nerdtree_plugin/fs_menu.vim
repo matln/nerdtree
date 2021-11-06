@@ -273,7 +273,10 @@ function! NERDTreeDeleteNode()
 
     if confirmed
         try
-            call currentNode.delete()
+            " call currentNode.delete()
+            " exe "silent !bash /usr/bin/safe_rm.sh -rf ".currentNode.path.str()
+            exe "silent !/data/lijianchen/miniconda3/envs/pytorch/bin/trash-put --trash-dir=/data/lijianchen/.Trash --force-volume=/data ".currentNode.path.str()
+            call b:NERDTree.root.refresh()
             call NERDTreeRender()
 
             "if the node is open in a buffer, ask the user if they want to
