@@ -189,6 +189,7 @@ function! NERDTreeAddNode()
             call b:NERDTree.render()
         elseif parentNode.isOpen || !empty(parentNode.children)
             call parentNode.addChild(newTreeNode, 1)
+            call b:NERDTree.root.refresh()
             call NERDTreeRender()
             call newTreeNode.putCursorHere(1, 0)
         endif
@@ -259,17 +260,19 @@ function! NERDTreeDeleteNode()
     let currentNode = g:NERDTreeFileNode.GetSelected()
     let confirmed = 0
 
-    if currentNode.path.isDirectory && ((currentNode.isOpen && currentNode.getChildCount() > 0) ||
-                                      \ (len(currentNode._glob('*', 1)) > 0))
-        let prompt = s:inputPrompt('deleteNonEmpty') . currentNode.path.str() . ': '
-        let choice = input(prompt)
-        let confirmed = choice ==# 'yes'
-    else
-        let prompt = s:inputPrompt('delete') . currentNode.path.str() . ' (yN): '
-        echo prompt
-        let choice = nr2char(getchar())
-        let confirmed = choice ==# 'y'
-    endif
+    " if currentNode.path.isDirectory && ((currentNode.isOpen && currentNode.getChildCount() > 0) ||
+    "                                   \ (len(currentNode._glob('*', 1)) > 0))
+    "     let prompt = s:inputPrompt('deleteNonEmpty') . currentNode.path.str() . ': '
+    "     let choice = input(prompt)
+    "     let confirmed = choice ==# 'yes'
+    " else
+    "     let prompt = s:inputPrompt('delete') . currentNode.path.str() . ' (yN): '
+    "     echo prompt
+    "     let choice = nr2char(getchar())
+    "     let confirmed = choice ==# 'y'
+    " endif
+
+    let confirmed = 1
 
     if confirmed
         try
